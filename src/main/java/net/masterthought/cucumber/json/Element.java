@@ -1,15 +1,14 @@
 package net.masterthought.cucumber.json;
 
-import com.googlecode.totallylazy.Function1;
-import com.googlecode.totallylazy.Sequence;
-import com.googlecode.totallylazy.Sequences;
+import net.masterthought.cucumber.util.Function;
+import net.masterthought.cucumber.util.Invocation;
 import net.masterthought.cucumber.util.Util;
 import org.apache.commons.lang.StringUtils;
+import scala.Function1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import static com.googlecode.totallylazy.Option.option;
 
 public class Element {
 
@@ -23,16 +22,16 @@ public class Element {
 
     }
 
-    public Sequence<Step> getSteps() {
-        return Sequences.sequence(option(steps).getOrElse(new Step[]{})).realise();
+    public List<Step> getSteps() {
+        return Arrays.asList(steps == null ? new Step[0] : steps);
     }
 
-    public Sequence<Tag> getTags() {
-        return Sequences.sequence(option(tags).getOrElse(new Tag[]{})).realise();
+    public List<Tag> getTags() {
+        return Arrays.asList(tags == null ? new Tag[0] : tags);
     }
 
     public Util.Status getStatus() {
-        Sequence<Step> results = getSteps().filter(Step.predicates.hasStatus(Util.Status.FAILED));
+        List<Step> results = Function.filter(getSteps(), Step.predicates.hasStatus(Util.Status.FAILED));
         return results.size() == 0 ? Util.Status.PASSED : Util.Status.FAILED;
     }
 
@@ -58,7 +57,7 @@ public class Element {
         return Util.itemExists(contentString) ? Util.result(getStatus()) + StringUtils.join(contentString.toArray(), " ") + Util.closeDiv() : "";
     }
 
-    public Sequence<String> getTagList() {
+    public List<String> getTagList() {
         return processTags();
     }
 
@@ -66,14 +65,14 @@ public class Element {
         return Util.itemExists(tags);
     }
 
-    private Sequence<String> processTags() {
-        return getTags().map(Tag.functions.getName());
+    private List<String> processTags() {
+        return Function.map(getTags(), Tag.functions.getName());
     }
 
     public String getTagsList() {
         String result = "<div class=\"feature-tags\"></div>";
         if (Util.itemExists(tags)) {
-            String tagList = StringUtils.join(processTags().toList().toArray(), ",");
+            String tagList = StringUtils.join(processTags().toArray(), ",");
             result = "<div class=\"feature-tags\">" + tagList + "</div>";
         }
         return result;
@@ -81,12 +80,12 @@ public class Element {
 
     public static class functions {
         public static Function1<Element, Util.Status> status() {
-            return new Function1<Element, Util.Status>() {
+            return Function.getInstance(new Invocation<Element, Util.Status>() {
                 @Override
-                public Util.Status call(Element element) throws Exception {
+                public Util.Status call(Element element) {
                     return element.getStatus();
                 }
-            };
+            });
         }
     }
 

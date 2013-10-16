@@ -1,6 +1,5 @@
 package net.masterthought.cucumber;
 
-import com.googlecode.totallylazy.Sequence;
 import net.masterthought.cucumber.json.Artifact;
 import net.masterthought.cucumber.json.Element;
 import net.masterthought.cucumber.json.Feature;
@@ -178,7 +177,7 @@ public class ReportInformation {
             for (ScenarioTag scenarioTag : tag.getScenarios()) {
 
                 if (Util.hasSteps(scenarioTag)) {
-                    Sequence<Step> steps = scenarioTag.getScenario().getSteps();
+                    List<Step> steps = scenarioTag.getScenario().getSteps();
                     List<Step> stepList = new ArrayList<Step>();
                     for (Step step : steps) {
                         stepList.add(step);
@@ -215,8 +214,8 @@ public class ReportInformation {
     private void processFeatures() {
         for (Feature feature : features) {
             List<ScenarioTag> scenarioList = new ArrayList<ScenarioTag>();
-            Sequence<Element> scenarios = feature.getElements();
-            if (Util.itemExists(scenarios)) {
+            List<Element> scenarios = feature.getElements();
+            if (Util.itemExists((List) scenarios)) {
                 numberOfScenarios = getNumberOfScenarios(scenarios);
                 for (Element scenario : scenarios) {
                     String scenarioName = scenario.getRawName();
@@ -241,7 +240,7 @@ public class ReportInformation {
 
 
                     if (Util.hasSteps(scenario)) {
-                        Sequence<Step> steps = scenario.getSteps();
+                        List<Step> steps = scenario.getSteps();
                         numberOfSteps = numberOfSteps + steps.size();
                         for (Step step : steps) {
                             String stepName = step.getRawName();
@@ -273,7 +272,7 @@ public class ReportInformation {
         processTags();
     }
 
-    private int getNumberOfScenarios(Sequence<Element> scenarios) {
+    private int getNumberOfScenarios(List<Element> scenarios) {
         List<Element> scenarioList = new ArrayList<Element>();
         for (Element scenario : scenarios) {
             if (!scenario.getKeyword().equals("Background")) {
@@ -310,7 +309,7 @@ public class ReportInformation {
         return scenarioList;
     }
 
-    private List<TagObject> createOrAppendToTagMap(List<TagObject> tagMap, Sequence<String> tagList, List<ScenarioTag> scenarioList) {
+    private List<TagObject> createOrAppendToTagMap(List<TagObject> tagMap, List<String> tagList, List<ScenarioTag> scenarioList) {
         for (String tag : tagList) {
             boolean exists = false;
             TagObject tagObj = null;

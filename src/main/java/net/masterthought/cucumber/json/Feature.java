@@ -2,13 +2,18 @@ package net.masterthought.cucumber.json;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.googlecode.totallylazy.Function1;
-import com.googlecode.totallylazy.Sequence;
-import com.googlecode.totallylazy.Sequences;
+import net.masterthought.cucumber.util.Function;
 import net.masterthought.cucumber.util.Util;
 import org.apache.commons.lang.StringUtils;
+import scala.collection.JavaConverters;
+import scala.collection.JavaConversions;
+import scala.collection.generic.CanBuildFrom;
+import scala.collection.mutable.Buffer;
+import scala.collection.mutable.Builder;
+import scala.collection.mutable.ListBuffer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Feature {
@@ -27,8 +32,8 @@ public class Feature {
 
     }
 
-    public Sequence<Element> getElements() {
-        return Sequences.sequence(elements).realise();
+    public List<Element> getElements() {
+        return Arrays.asList(elements);
     }
 
     public String getFileName() {
@@ -50,25 +55,25 @@ public class Feature {
         return Util.itemExists(tags);
     }
 
-    public Sequence<String> getTagList() {
-        return getTags().map(Tag.functions.getName());
+    public List<String> getTagList() {
+        return Function.map(getTags(), Tag.functions.getName());
     }
 
-    public Sequence<Tag> getTags() {
-        return Sequences.sequence(tags).realise();
+    public List<Tag> getTags() {
+        return Arrays.asList(tags);
     }
 
     public String getTagsList() {
         String result = "<div class=\"feature-tags\"></div>";
         if (Util.itemExists(tags)) {
-            String tagList = StringUtils.join(getTagList().toList().toArray(), ",");
+            String tagList = StringUtils.join(getTagList().toArray(), ",");
             result = "<div class=\"feature-tags\">" + tagList + "</div>";
         }
         return result;
     }
 
     public Util.Status getStatus() {
-        Sequence<Util.Status> results = getElements().map(Element.functions.status());
+        List<Util.Status> results = Function.map(getElements(), Element.functions.status());
         return results.contains(Util.Status.FAILED) ? Util.Status.FAILED : Util.Status.PASSED;
     }
 
@@ -165,7 +170,7 @@ public class Feature {
             for (Element element : elements) {
                 calculateScenarioStats(passedScenarios, failedScenarios, element);
                 if (Util.hasSteps(element)) {
-                    Sequence<Step> steps = element.getSteps();
+                    List<Step> steps = element.getSteps();
                     for (Step step : steps) {
                         allSteps.add(step);
                         Util.Status stepStatus = step.getStatus();

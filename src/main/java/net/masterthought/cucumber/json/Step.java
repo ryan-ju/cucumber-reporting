@@ -2,16 +2,16 @@ package net.masterthought.cucumber.json;
 
 import com.google.common.base.Joiner;
 import com.google.gson.internal.LinkedTreeMap;
-import com.googlecode.totallylazy.Function1;
-import com.googlecode.totallylazy.Sequences;
-import com.googlecode.totallylazy.predicates.LogicalPredicate;
 import net.masterthought.cucumber.ConfigurationOptions;
+import net.masterthought.cucumber.util.Function;
+import net.masterthought.cucumber.util.Invocation;
 import net.masterthought.cucumber.util.Util;
+import scala.Function1;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static com.googlecode.totallylazy.Option.option;
 import static org.apache.commons.lang.StringUtils.EMPTY;
 
 public class Step {
@@ -39,7 +39,7 @@ public class Step {
     }
 
     public String getOutput() {
-        List<String> outputList = Sequences.sequence(option(output).getOrElse(new String[]{})).realise().toList();
+        List<String> outputList = Arrays.asList(output == null ? new String[0] : output);
         return Joiner.on("").skipNulls().join(outputList);
     }
 
@@ -206,34 +206,34 @@ public class Step {
 
     public static class functions {
         public static Function1<Step, Util.Status> status() {
-            return new Function1<Step, Util.Status>() {
+            return Function.getInstance(new Invocation<Step, Util.Status>() {
                 @Override
-                public Util.Status call(Step step) throws Exception {
+                public Util.Status call(Step step) {
                     return step.getStatus();
                 }
-            };
+            });
         }
     }
 
     public static class predicates {
 
-        public static LogicalPredicate<Step> hasStatus(final Util.Status status) {
-            return new LogicalPredicate<Step>() {
+        public static Function1<Step, Boolean> hasStatus(final Util.Status status) {
+            return Function.getInstance(new Invocation<Step, Boolean>() {
                 @Override
-                public boolean matches(Step step) {
+                public Boolean call(Step step) {
                     return step.getStatus().equals(status);
                 }
-            };
+            });
         }
 
 
         public static Function1<Step, Util.Status> status() {
-            return new Function1<Step, Util.Status>() {
+            return Function.getInstance(new Invocation<Step, Util.Status>() {
                 @Override
-                public Util.Status call(Step step) throws Exception {
+                public Util.Status call(Step step) {
                     return step.getStatus();
                 }
-            };
+            });
         }
     }
 

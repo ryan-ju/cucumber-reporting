@@ -1,6 +1,5 @@
 package net.masterthought.cucumber.util;
 
-import com.googlecode.totallylazy.Sequence;
 import net.masterthought.cucumber.ScenarioTag;
 import net.masterthought.cucumber.json.*;
 import org.joda.time.Period;
@@ -77,10 +76,6 @@ public class Util {
 
     public static boolean itemExists(List<String> listItem) {
         return listItem.size() != 0;
-    }
-
-    public static boolean itemExists(Sequence<Element> sequence) {
-        return sequence.size() != 0;
     }
 
     public static boolean itemExists(Tag[] tags) {

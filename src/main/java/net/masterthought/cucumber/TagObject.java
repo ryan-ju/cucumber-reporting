@@ -1,7 +1,7 @@
 package net.masterthought.cucumber;
 
-import com.googlecode.totallylazy.Sequence;
-import com.googlecode.totallylazy.Sequences;
+import net.masterthought.cucumber.util.Function;
+import scala.collection.mutable.Buffer;
 import net.masterthought.cucumber.json.Element;
 import net.masterthought.cucumber.json.Step;
 import net.masterthought.cucumber.util.Util;
@@ -123,13 +123,13 @@ public class TagObject {
         return statuses;
     }
 
-    public Sequence<Element> getElements() {
+    public List<Element> getElements() {
         populateElements();
-        return Sequences.sequence(elements);
+        return new ArrayList<Element>(elements);
     }
 
     public Util.Status getStatus() {
-        Sequence<Util.Status> results = getElements().map(Element.functions.status());
+        List<Util.Status> results = Function.map(getElements(), Element.functions.status());
         return results.contains(Util.Status.FAILED) ? Util.Status.FAILED : Util.Status.PASSED;
     }
 

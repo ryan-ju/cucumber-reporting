@@ -1,6 +1,8 @@
 package net.masterthought.cucumber.json;
 
-import com.googlecode.totallylazy.Function1;
+import net.masterthought.cucumber.util.Function;
+import net.masterthought.cucumber.util.Invocation;
+import scala.Function1;
 
 public class Tag {
 
@@ -17,12 +19,12 @@ public class Tag {
     public static class functions {
 
         public static Function1<Tag, String> getName() {
-            return new Function1<Tag, String>() {
+            return Function.getInstance(new Invocation<Tag, String>(){
                 @Override
-                public String call(Tag tag) throws Exception {
+                public String call(Tag tag) {
                     return tag.getName();
                 }
-            };
+            });
         }
     }
 
