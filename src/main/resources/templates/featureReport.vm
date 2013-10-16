@@ -44,8 +44,25 @@
                           $('#' + id).dialog();
                        }
 
+            
+
+
         </script>
-    #end
+	#end
+	<script>
+		function show-hide-output(buttonName, outputName) {
+                var button = document.getElementById(buttonName);
+                var output = document.getElementById(outputName);
+				
+				if (output.style.display == none) {
+					output.style.display = '';
+                    button.innerHTML = "hide output";
+				} else {
+					output.style.display = none;
+					button.innerHTML = "show output";
+				}
+            }
+	</script>
 <style>
     .CodeMirror-scroll {
       height: auto;
@@ -128,6 +145,10 @@ table.data-table td {
    padding-left:50px;
     padding-bottom: 10px;
     padding-top: 10px;
+}
+
+.toggle-output {
+    background:url("images/f0113.png") no-repeat 30px 30px;
 }
 
 .output-data {
@@ -240,8 +261,15 @@ table.data-table td {
                       #end
                       </table>
                         </div>
-                    #end
-                  <div class="output-data">$step.getOutput()</div>
+					#end
+					#*
+                    #if ($step.getOutput())
+                        #set( $buttonName = "toggle-output-$foreach.index" )
+                        #set( $outputName = "output-data-$foreach.index" )
+                        <div class="toggle-output" name="$buttonName" onclick="show-hide-output($buttonName, $outputName); return false;">show output</div>
+                        <div class="output-data" name="$outputName">$step.getOutput()</div>
+					#end
+					*#
                 #end
             #end
 

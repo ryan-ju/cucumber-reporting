@@ -1,18 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.masterthought</groupId>
+    <parent>
+        <groupId>com.omnifone.parent</groupId>
+        <artifactId>engineering-parent</artifactId>
+        <version>1.0.3</version>
+    </parent>
+    <groupId>com.omnifone.cucumber</groupId>
     <artifactId>cucumber-reporting</artifactId>
     <packaging>jar</packaging>
     <version>0.0.22-SNAPSHOT</version>
     <name>cucumber-reporting</name>
-    <url>https://github.com/masterthought/cucumber-reporting</url>
 
-    <repositories>
-        <repository>
-            <id>repo.bodar.com</id>
-            <url>http://repo.bodar.com</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>repo.bodar.com</id>-->
+            <!--<url>http://repo.bodar.com</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -21,17 +25,12 @@
         <maven.compile.encoding>UTF-8</maven.compile.encoding>
     </properties>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
 
-    <scm>
-        <connection>scm:git:git@github.com:masterthought/cucumber-reporting.git</connection>
-        <developerConnection>scm:git:git@github.com:masterthought/cucumber-reporting.git</developerConnection>
-        <url>git@github.com:masterthought/cucumber-reporting.git</url>
-    </scm>
+    <!--<scm>-->
+        <!--<connection>scm:git:git@github.com:ryan-ju/cucumber-reporting.git</connection>-->
+        <!--<developerConnection>scm:git:git@github.com:ryan-ju/cucumber-reporting.git</developerConnection>-->
+        <!--<url>git@github.com:ryan-ju/cucumber-reporting.git</url>-->
+    <!--</scm>-->
 
     <description>
         This project provides pretty html reports for Cucumber. It works by generating html from the cucumber json
@@ -39,68 +38,6 @@
         plugin and a maven mojo to generate the same report from mvn command line when running locally.
     </description>
 
-    <licenses>
-        <license>
-            <comments>Use this project wherever you like</comments>
-            <name>LGPL 2.1</name>
-            <url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>kingsleyh</id>
-            <name>Kingsley Hendrickse</name>
-            <email>kingsley.hendrickse@gmail.com</email>
-            <timezone>GMT</timezone>
-            <roles>
-            </roles>
-        </developer>
-    </developers>
-
-    <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-
-            <activation>
-                <property>
-                    <!--
-                                 will be set by the release plugin upon performing mvn
-                                 release:perform
-                             -->
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-
-            <properties>
-                <gpg.keyname>E91DA67C</gpg.keyname>
-                <release.username>kingsleyh</release.username>
-            </properties>
-
-            <build>
-
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-
-            </build>
-
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
@@ -130,9 +67,9 @@
             <version>2.2.4</version>
         </dependency>
         <dependency>
-            <groupId>maven</groupId>
+            <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
-            <version>1.5-20060721.044818</version>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -160,14 +97,14 @@
             <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.totallylazy</groupId>
-            <artifactId>totallylazy</artifactId>
-            <version>1077</version>
-        </dependency>
-        <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.9.2</version>
         </dependency>
     </dependencies>
 </project>
