@@ -246,7 +246,7 @@ table.data-table td {
             #foreach($scenario in $scenarios)
                 $scenario.getTagsList()
                 $scenario.getName()
-                #foreach($step in $scenario.getSteps().toList())
+                #foreach($step in $scenario.getSteps())
                   $step.getName()
                     $step.getDocStringOrNothing()
                     #if($step.hasRows())
@@ -262,14 +262,14 @@ table.data-table td {
                       </table>
                         </div>
 					#end
-					#*
+
                     #if ($step.getOutput())
                         #set( $buttonName = "toggle-output-$foreach.index" )
                         #set( $outputName = "output-data-$foreach.index" )
-                        <div class="toggle-output" name="$buttonName" onclick="show-hide-output($buttonName, $outputName); return false;">show output</div>
+                        <div class="toggle-output" name="$buttonName" onclick="show-hide-output('$buttonName', '$outputName'); return false;">show output</div>
                         <div class="output-data" name="$outputName">$step.getOutput()</div>
 					#end
-					*#
+
                 #end
             #end
 
